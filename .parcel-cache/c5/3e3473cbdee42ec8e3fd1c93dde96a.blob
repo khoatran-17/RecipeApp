@@ -1,0 +1,46 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "elements", function () {
+  return elements;
+});
+_parcelHelpers.export(exports, "elementStrings", function () {
+  return elementStrings;
+});
+_parcelHelpers.export(exports, "renderLoader", function () {
+  return renderLoader;
+});
+_parcelHelpers.export(exports, "clearLoader", function () {
+  return clearLoader;
+});
+const elements = {
+  searchForm: document.querySelector('.search'),
+  searchInput: document.querySelector('.search__field'),
+  searchResultList: document.querySelector('.results__list'),
+  searchResult: document.querySelector('.results'),
+  searchResultPages: document.querySelector('.results__pages'),
+  recipe: document.querySelector('.recipe'),
+  likeIcon: document.querySelector('.recipe__love'),
+  likeMenu: document.querySelector('.likes__field'),
+  likeList: document.querySelector('.likes__list'),
+  addRecipeBtn: document.querySelector('.nav__btn--add-recipe')
+};
+const elementStrings = {
+  loader: 'loader',
+  btn_inline: 'btn-inline',
+  resultsLink: 'results__link',
+  resultsLinkActive: 'results__link--active'
+};
+const renderLoader = parent => {
+  const loader = `
+    <div class="${elementStrings.loader}">
+      <i class='bx bx-loader-circle' ></i>
+    </div>
+    `;
+  parent.insertAdjacentHTML('afterbegin', loader);
+};
+const clearLoader = () => {
+  const loader = document.querySelector(`.${elementStrings.loader}`);
+  if (loader) {
+    loader.parentElement.removeChild(loader);
+  }
+};

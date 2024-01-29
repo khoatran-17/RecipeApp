@@ -1,0 +1,6 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "key", function () {
+  return key;
+});
+const key = '2873f46c-8e8a-4d73-bb2a-1f46b1e47edc';

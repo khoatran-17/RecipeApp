@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="preconnect" href="c5b17644e9b6ae13bb384d72781855da">
+    <link href="299ff6061db7cf7e0d72183cdd7bf3a4" rel="stylesheet">
+    <link rel="stylesheet" href="ac315d1d250b563ea0eda5e979b42a9a">
+    <link href="c026c40eab0ba22252e60afa4e4f7e9d" rel="stylesheet">
+    <link rel="icon shortcut" href="6d35200dae048a37bf7f63f61a1363aa" type="image/x-icon">
+    <script src="bf5375481e4699f6c87d5bb19acfd7fe" type="module"></script>
+    <title>SpecialTea Recipes App</title>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header glass">
+        <img src="ce6303db6b4e313363e4a76e857082a8" alt="Logo" class="header__logo">
+
+        <form class="search">
+          <input type="text" class="search__field" placeholder="Search for a recipe...">
+          <button class="btn search__btn">
+            <i class="bx bx-search-alt search__icon"></i> <span>Search</span>
+          </button>
+        </form>
+
+        <div class="user__recipe">
+          <button class="nav__btn nav__btn--add-recipe">
+            <i class="bx bx-cloud-upload"></i>
+          </button>
+          <div class="user__panel glass"><ul class="user__list"></ul></div>
+        </div>
+
+        <div class="likes">
+          <div class="likes__field"><i class="bx bx-book-heart likes__icon"></i></div>
+          <div class="likes__panel glass"><ul class="likes__list"></ul></div>
+        </div>
+      </header>
+
+      <div class="results">
+        <ul class="results__list"></ul>
+        <div class="results__pages"></div>
+      </div>
+
+      <div class="recipe-container glass">
+        <div class="recipe">
+          <p class="introText">
+            Welcome, <br>
+            search for a recipe above to begin.
+          </p>
+        </div>
+      </div>
+
+      <div class="overlay hidden"></div>
+      <div class="upload-container">
+        <div class="add-recipe-window glass hidden">
+          <button class="btn--close">&times;</button>
+
+          <form class="upload">
+            <div class="upload__column upload__info">
+              <h3 class="upload__heading">Recipe data</h3>
+              <label>Title</label>
+              <input required="" name="title" type="text">
+
+              <label>Publisher</label>
+              <input required="" name="publisher" type="text">
+
+              <label>Prep time</label>
+              <input required="" name="cookingTime" type="number" placeholder="mins">
+
+              <label>Servings</label>
+              <input required="" name="servings" type="number">
+            </div>
+
+            <div class="upload__column upload__ingr">
+              <h3 class="upload__heading">Ingredients</h3>
+              <label>Ingredient 1</label>
+              <input type="text" required="" name="ingredient-1" placeholder="Quantity,Unit,Description">
+
+              <label>Ingredient 2</label>
+              <input type="text" name="ingredient-2" placeholder="Quantity,Unit,Description">
+
+              <label>Ingredient 3</label>
+              <input type="text" name="ingredient-3" placeholder="Quantity,Unit,Description">
+
+              <label>Ingredient 4</label>
+              <input type="text" name="ingredient-4" placeholder="Quantity,Unit,Description">
+
+              <label>Ingredient 5</label>
+              <input type="text" name="ingredient-5" placeholder="Quantity,Unit,Description">
+
+              <label>Ingredient 6</label>
+              <input type="text" name="ingredient-6" placeholder="Quantity,Unit,Description">
+            </div>
+
+            <button class="btn upload__btn">
+              <i class="bx bx-cloud-upload"></i>
+              <span>Upload</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="copyright glass">&copy; Created by Khoa Tran</div>
+    </div>
+  </body>
+</html>

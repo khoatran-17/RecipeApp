@@ -1,0 +1,44 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "toggleLikeBtn", function () {
+  return toggleLikeBtn;
+});
+_parcelHelpers.export(exports, "toggleLikeMenu", function () {
+  return toggleLikeMenu;
+});
+_parcelHelpers.export(exports, "renderLike", function () {
+  return renderLike;
+});
+_parcelHelpers.export(exports, "deleteLikeItem", function () {
+  return deleteLikeItem;
+});
+var _base = require('./base');
+var _searchView = require('./searchView');
+const toggleLikeBtn = isLiked => {
+  const iconString = isLiked ? 'bxs' : 'bx';
+  // Can select a certain child element of a parent element like '.recipe__love use'
+  document.querySelector('.recipe__love i').setAttribute('class', `bx ${iconString}-heart`);
+};
+const toggleLikeMenu = numLikes => {
+  _base.elements.likeMenu.style.visibility = numLikes > 0 ? 'visible' : 'hidden';
+};
+const renderLike = like => {
+  const markup = `
+        <li>
+            <a class="likes__link glass" href="#${like.id}&like" >
+                <figure class="likes__fig">
+                    <img src="${like.img}" alt="Liked Recipe Image">
+                </figure>
+                <div class="likes__data">
+                    <h4 class="likes__name">${_searchView.limitTitle(like.title)}</h4>
+                    <p class="likes__author">${like.author}</p>
+                </div>
+            </a>
+        </li>
+    `;
+  _base.elements.likeList.insertAdjacentHTML('beforeend', markup);
+};
+const deleteLikeItem = id => {
+  const element = document.querySelector(`.likes__link[href='#${id}&like']`).parentElement;
+  if (element) element.parentElement.removeChild(element);
+};

@@ -1,0 +1,27 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _base = require('./base');
+class addRecipeView {
+  constructor() {
+    this.toggleUserRecipe();
+  }
+  toggleUserRecipe() {
+    _base.elements.recipeOverlay.classList.toggle('hidden');
+    _base.elements.recipeWindow.classList.toggle('hidden');
+  }
+  submitUserRecipe(event) {
+    event.preventDefault();
+    const formDataArr = [...new FormData(this)];
+    const ingredients = formDataArr.filter(input => {
+      return input[0].startsWith('ingredient') && input[1] !== '';
+    });
+    try {
+      const ingredientsSplit = ingredients.map(ing => {
+        const ingArr = ing[1].replaceAll(' ', '').split(',');
+        if (ingArr.length !== 3) throw new Error('Ingredient input invalid!');
+        return ingArr;
+      });
+    } catch (error) {}
+  }
+}
+exports.default = addRecipeView;

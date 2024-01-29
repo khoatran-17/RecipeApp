@@ -1,0 +1,59 @@
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _config = require('./config');
+const evalString = string => {
+  return Function('"use strict";return (' + string + ')')();
+};
+class Recipe {
+  constructor(id) {
+    this.id = id;
+  }
+  async getRecipe() {
+    try {
+      const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${this.id}?key=${_config.key}`);
+      const data = await res.json();
+      console.log(data);
+      this.title = data.data.recipe.title;
+      this.author = data.data.recipe.publisher;
+      this.img = data.data.recipe.image_url;
+      this.url = data.data.recipe.source_url;
+      this.ingredients = data.data.recipe.ingredients;
+    } catch (error) {
+      alert(error);
+    }
+  }
+  calcTime() {
+    // Assume we need 15min per 3 ingredients
+    const numIng = this.ingredients.length;
+    this.time = Math.ceil(numIng / 3) * 15;
+  }
+  calcServings() {
+    this.servings = 4;
+  }
+  parseIngredients() {
+    const newIngredients = this.ingredients.map(el => {
+      // 1) Uniform units
+      let ingredient = el.description.toLowerCase();
+      // 2) Remove parentheses
+      ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
+      let ingObj;
+      // There is BOTH a quantity and a unit
+      if (el.quantity != null) {
+        ingObj = {
+          count: el.quantity,
+          unit: el.unit,
+          ingredient: ingredient
+        };
+      } else {
+        ingObj = {
+          count: 1,
+          unit: el.unit,
+          ingredient: ingredient
+        };
+      }
+      return ingObj;
+    });
+    this.ingredients = newIngredients;
+  }
+}
+exports.default = Recipe;

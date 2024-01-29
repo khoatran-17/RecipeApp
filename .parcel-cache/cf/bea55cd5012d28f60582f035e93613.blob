@@ -1,0 +1,142 @@
+var _Search = require('./Search');
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+var _SearchDefault = _parcelHelpers.interopDefault(_Search);
+var _searchView = require('./searchView');
+var _Recipe = require('./Recipe');
+var _RecipeDefault = _parcelHelpers.interopDefault(_Recipe);
+var _recipeView = require('./recipeView');
+var _Like = require('./Like');
+var _LikeDefault = _parcelHelpers.interopDefault(_Like);
+var _likeView = require('./likeView');
+var _base = require('./base');
+var _userRecipe = require('./userRecipe');
+var _userRecipeDefault = _parcelHelpers.interopDefault(_userRecipe);
+/** Global state of the app
+* - Search object
+* - Current recipe object
+* - Liked recipes
+*/
+const state = {};
+// The user SEARCHES for a keyword in the recipe bar
+_base.elements.searchForm.addEventListener('submit', event => {
+  // Prevent default action from occuring, in this case it prevent reloading the page
+  // submitting a form.
+  event.preventDefault();
+  controlSearch();
+});
+// Render the PREV or NEXT page of results from the recipe result list
+_base.elements.searchResultPages.addEventListener('click', event => {
+  const btn = event.target.closest(`.${_base.elementStrings.btn_inline}`);
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto);
+    _searchView.clearResults();
+    _searchView.renderResults(state.search.results, goToPage);
+  }
+});
+/**
+* SEARCH CONTROLLER
+*/
+const controlSearch = async () => {
+  // 1) Get query from view
+  const query = _searchView.getInput();
+  if (query) {
+    // 2) New search object and add to state
+    state.search = new _SearchDefault.default(query);
+    // 3) Prepare UI for results
+    _searchView.clearInput();
+    _searchView.clearResults();
+    _base.renderLoader(_base.elements.searchResult);
+    try {
+      // 4) Search for recipes
+      await state.search.getResults();
+      // 5) Render results on UI
+      _base.clearLoader();
+      _searchView.renderResults(state.search.results);
+    } catch (error) {
+      _base.clearLoader();
+      alert(error);
+    }
+  }
+};
+/**
+* RECIPE CONTROLLER
+*/
+// DISPLAY the recipe selected using the hash key from the url
+const controlRecipe = async () => {
+  // 1) Get ID from url
+  const id = window.location.hash.replace('#', '');
+  if (id) {
+    // Prepare the UI for changes
+    _recipeView.clearRecipe();
+    _base.renderLoader(_base.elements.recipe);
+    // Highlight selected search item
+    if (state.search) _searchView.highlightSelected(id);
+    // Create new recipe object
+    state.recipe = new _RecipeDefault.default(id);
+    try {
+      // Get recipe data
+      await state.recipe.getRecipe();
+      state.recipe.parseIngredients();
+      // // Calc time and servings
+      // state.recipe.calcTime();
+      // state.recipe.calcServings();
+      // Render recipe
+      _base.clearLoader();
+      _recipeView.renderRecipe(state.recipe, state.like.isLiked(id));
+    } catch (error) {
+      alert(error);
+    }
+  }
+};
+// Render the SELECTED when the user clicks on the item using the hash value
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+/**
+* LIKE CONTROLLER
+*/
+const controlLike = () => {
+  if (!state.like) state.like = new _LikeDefault.default();
+  const currentID = state.recipe.id;
+  // Use has not yet liked current recipe
+  if (!state.like.isLiked(currentID)) {
+    // Add like to the state
+    const newLike = state.like.addLike(currentID, state.recipe.title, state.recipe.author, state.recipe.img);
+    // Toggle the like button
+    _likeView.toggleLikeBtn(true);
+    // Add like to UI list
+    _likeView.renderLike(newLike);
+  } else {
+    // Remove like from the state
+    state.like.deleteLike(currentID);
+    // Toggle the like button
+    _likeView.toggleLikeBtn(false);
+    // Remove like from UI list
+    _likeView.deleteLikeItem(currentID);
+  }
+  _likeView.toggleLikeMenu(state.like.getNumLikes());
+};
+// Restore liked recipes on page load
+window.addEventListener('load', () => {
+  state.like = new _LikeDefault.default();
+  // Restore likes
+  state.like.readStorage();
+  // Toggle like menu button
+  _likeView.toggleLikeMenu(state.like.getNumLikes());
+  // Render the existing likes
+  state.like.likes.forEach(curr => _likeView.renderLike(curr));
+});
+// Handling the LIKE button clicks
+_base.elements.recipe.addEventListener('click', event => {
+  if (event.target.matches('.recipe__love, .recipe__love *')) {
+    // Add to liked recipe
+    controlLike();
+  }
+});
+/**
+* NEW USER RECIPE CONTROLLER
+*/
+const controlUserRecipe = () => {
+  state.userRecipe = new _userRecipeDefault.default();
+  [_base.elements.closeUserRecipe, _base.elements.recipeOverlay].forEach(elem => elem.addEventListener('click', state.userRecipe.toggleUserRecipe));
+  _base.elements.userRecipeForm.addEventListener('submit', state.userRecipe.submitUserRecipe);
+};
+_base.elements.addRecipeBtn.addEventListener('click', controlUserRecipe);

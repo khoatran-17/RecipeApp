@@ -1,0 +1,1103 @@
+// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
+
+(function(modules, entry, mainEntry, parcelRequireName, globalName) {
+  /* eslint-disable no-undef */
+  var globalObject =
+    typeof globalThis !== 'undefined'
+      ? globalThis
+      : typeof self !== 'undefined'
+      ? self
+      : typeof window !== 'undefined'
+      ? window
+      : typeof global !== 'undefined'
+      ? global
+      : {};
+  /* eslint-enable no-undef */
+
+  // Save the require from previous bundle to this closure if any
+  var previousRequire =
+    typeof globalObject[parcelRequireName] === 'function' &&
+    globalObject[parcelRequireName];
+
+  var cache = previousRequire.cache || {};
+  // Do not use `require` to prevent Webpack from trying to bundle this call
+  var nodeRequire =
+    typeof module !== 'undefined' &&
+    typeof module.require === 'function' &&
+    module.require.bind(module);
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire =
+          typeof globalObject[parcelRequireName] === 'function' &&
+          globalObject[parcelRequireName];
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        // Try the node require function if it exists.
+        if (nodeRequire && typeof name === 'string') {
+          return nodeRequire(name);
+        }
+
+        var err = new Error("Cannot find module '" + name + "'");
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      localRequire.resolve = resolve;
+      localRequire.cache = {};
+
+      var module = (cache[name] = new newRequire.Module(name));
+
+      modules[name][0].call(
+        module.exports,
+        localRequire,
+        module,
+        module.exports,
+        this
+      );
+    }
+
+    return cache[name].exports;
+
+    function localRequire(x) {
+      return newRequire(localRequire.resolve(x));
+    }
+
+    function resolve(x) {
+      return modules[name][1][x] || x;
+    }
+  }
+
+  function Module(moduleName) {
+    this.id = moduleName;
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.isParcelRequire = true;
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+  newRequire.register = function(id, exports) {
+    modules[id] = [
+      function(require, module) {
+        module.exports = exports;
+      },
+      {},
+    ];
+  };
+
+  Object.defineProperty(newRequire, 'root', {
+    get: function() {
+      return globalObject[parcelRequireName];
+    },
+  });
+
+  globalObject[parcelRequireName] = newRequire;
+
+  for (var i = 0; i < entry.length; i++) {
+    newRequire(entry[i]);
+  }
+
+  if (mainEntry) {
+    // Expose entry point to Node, AMD or browser globals
+    // Based on https://github.com/ForbesLindesay/umd/blob/master/template.js
+    var mainExports = newRequire(mainEntry);
+
+    // CommonJS
+    if (typeof exports === 'object' && typeof module !== 'undefined') {
+      module.exports = mainExports;
+
+      // RequireJS
+    } else if (typeof define === 'function' && define.amd) {
+      define(function() {
+        return mainExports;
+      });
+
+      // <script>
+    } else if (globalName) {
+      this[globalName] = mainExports;
+    }
+  }
+})({"21c8X":[function(require,module,exports) {
+var HMR_HOST = null;
+var HMR_PORT = 1234;
+var HMR_SECURE = false;
+var HMR_ENV_HASH = "d751713988987e9331980363e24189ce";
+module.bundle.HMR_BUNDLE_ID = "062e9a7565ca912a5f7d6b832142d36c";
+// @flow
+/*global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE*/
+/*::
+import type {
+HMRAsset,
+HMRMessage,
+} from '@parcel/reporter-dev-server/src/HMRServer.js';
+interface ParcelRequire {
+(string): mixed;
+cache: {|[string]: ParcelModule|};
+hotData: mixed;
+Module: any;
+parent: ?ParcelRequire;
+isParcelRequire: true;
+modules: {|[string]: [Function, {|[string]: string|}]|};
+HMR_BUNDLE_ID: string;
+root: ParcelRequire;
+}
+interface ParcelModule {
+hot: {|
+data: mixed,
+accept(cb: (Function) => void): void,
+dispose(cb: (mixed) => void): void,
+// accept(deps: Array<string> | string, cb: (Function) => void): void,
+// decline(): void,
+_acceptCallbacks: Array<(Function) => void>,
+_disposeCallbacks: Array<(mixed) => void>,
+|};
+}
+declare var module: {bundle: ParcelRequire, ...};
+declare var HMR_HOST: string;
+declare var HMR_PORT: string;
+declare var HMR_ENV_HASH: string;
+declare var HMR_SECURE: boolean;
+*/
+var OVERLAY_ID = '__parcel__error__overlay__';
+var OldModule = module.bundle.Module;
+function Module(moduleName) {
+  OldModule.call(this, moduleName);
+  this.hot = {
+    data: module.bundle.hotData,
+    _acceptCallbacks: [],
+    _disposeCallbacks: [],
+    accept: function (fn) {
+      this._acceptCallbacks.push(fn || (function () {}));
+    },
+    dispose: function (fn) {
+      this._disposeCallbacks.push(fn);
+    }
+  };
+  module.bundle.hotData = undefined;
+}
+module.bundle.Module = Module;
+var checkedAssets, /*: {|[string]: boolean|}*/
+acceptedAssets, /*: {|[string]: boolean|}*/
+/*: {|[string]: boolean|}*/
+assetsToAccept;
+function getHostname() {
+  return HMR_HOST || (location.protocol.indexOf('http') === 0 ? location.hostname : 'localhost');
+}
+function getPort() {
+  return HMR_PORT || location.port;
+}
+// eslint-disable-next-line no-redeclare
+var parent = module.bundle.parent;
+if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
+  var hostname = getHostname();
+  var port = getPort();
+  var protocol = HMR_SECURE || location.protocol == 'https:' && !(/localhost|127.0.0.1|0.0.0.0/).test(hostname) ? 'wss' : 'ws';
+  var ws = new WebSocket(protocol + '://' + hostname + (port ? ':' + port : '') + '/');
+  // $FlowFixMe
+  ws.onmessage = function (event) /*: {data: string, ...}*/
+  {
+    checkedAssets = {
+      /*: {|[string]: boolean|}*/
+    };
+    acceptedAssets = {
+      /*: {|[string]: boolean|}*/
+    };
+    assetsToAccept = [];
+    var data = /*: HMRMessage*/
+    JSON.parse(event.data);
+    if (data.type === 'update') {
+      // Remove error overlay if there is one
+      removeErrorOverlay();
+      let assets = data.assets.filter(asset => asset.envHash === HMR_ENV_HASH);
+      // Handle HMR Update
+      var handled = false;
+      assets.forEach(asset => {
+        var didAccept = asset.type === 'css' || asset.type === 'js' && hmrAcceptCheck(module.bundle.root, asset.id, asset.depsByBundle);
+        if (didAccept) {
+          handled = true;
+        }
+      });
+      if (handled) {
+        console.clear();
+        assets.forEach(function (asset) {
+          hmrApply(module.bundle.root, asset);
+        });
+        for (var i = 0; i < assetsToAccept.length; i++) {
+          var id = assetsToAccept[i][1];
+          if (!acceptedAssets[id]) {
+            hmrAcceptRun(assetsToAccept[i][0], id);
+          }
+        }
+      } else {
+        window.location.reload();
+      }
+    }
+    if (data.type === 'error') {
+      // Log parcel errors to console
+      for (let ansiDiagnostic of data.diagnostics.ansi) {
+        let stack = ansiDiagnostic.codeframe ? ansiDiagnostic.codeframe : ansiDiagnostic.stack;
+        console.error('🚨 [parcel]: ' + ansiDiagnostic.message + '\n' + stack + '\n\n' + ansiDiagnostic.hints.join('\n'));
+      }
+      // Render the fancy html overlay
+      removeErrorOverlay();
+      var overlay = createErrorOverlay(data.diagnostics.html);
+      // $FlowFixMe
+      document.body.appendChild(overlay);
+    }
+  };
+  ws.onerror = function (e) {
+    console.error(e.message);
+  };
+  ws.onclose = function (e) {
+    if (undefined !== 'test') {
+      console.warn('[parcel] 🚨 Connection to the HMR server was lost');
+    }
+  };
+}
+function removeErrorOverlay() {
+  var overlay = document.getElementById(OVERLAY_ID);
+  if (overlay) {
+    overlay.remove();
+    console.log('[parcel] ✨ Error resolved');
+  }
+}
+function createErrorOverlay(diagnostics) {
+  var overlay = document.createElement('div');
+  overlay.id = OVERLAY_ID;
+  let errorHTML = '<div style="background: black; opacity: 0.85; font-size: 16px; color: white; position: fixed; height: 100%; width: 100%; top: 0px; left: 0px; padding: 30px; font-family: Menlo, Consolas, monospace; z-index: 9999;">';
+  for (let diagnostic of diagnostics) {
+    let stack = diagnostic.codeframe ? diagnostic.codeframe : diagnostic.stack;
+    errorHTML += `
+      <div>
+        <div style="font-size: 18px; font-weight: bold; margin-top: 20px;">
+          🚨 ${diagnostic.message}
+        </div>
+        <pre>
+          ${stack}
+        </pre>
+        <div>
+          ${diagnostic.hints.map(hint => '<div>' + hint + '</div>').join('')}
+        </div>
+      </div>
+    `;
+  }
+  errorHTML += '</div>';
+  overlay.innerHTML = errorHTML;
+  return overlay;
+}
+function getParents(bundle, id) /*: Array<[ParcelRequire, string]>*/
+{
+  var modules = bundle.modules;
+  if (!modules) {
+    return [];
+  }
+  var parents = [];
+  var k, d, dep;
+  for (k in modules) {
+    for (d in modules[k][1]) {
+      dep = modules[k][1][d];
+      if (dep === id || Array.isArray(dep) && dep[dep.length - 1] === id) {
+        parents.push([bundle, k]);
+      }
+    }
+  }
+  if (bundle.parent) {
+    parents = parents.concat(getParents(bundle.parent, id));
+  }
+  return parents;
+}
+function updateLink(link) {
+  var newLink = link.cloneNode();
+  newLink.onload = function () {
+    if (link.parentNode !== null) {
+      // $FlowFixMe
+      link.parentNode.removeChild(link);
+    }
+  };
+  newLink.setAttribute('href', // $FlowFixMe
+  link.getAttribute('href').split('?')[0] + '?' + Date.now());
+  // $FlowFixMe
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+var cssTimeout = null;
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      // $FlowFixMe[incompatible-type]
+      var href = /*: string*/
+      links[i].getAttribute('href');
+      var hostname = getHostname();
+      var servedFromHMRServer = hostname === 'localhost' ? new RegExp('^(https?:\\/\\/(0.0.0.0|127.0.0.1)|localhost):' + getPort()).test(href) : href.indexOf(hostname + ':' + getPort());
+      var absolute = (/^https?:\/\//i).test(href) && href.indexOf(window.location.origin) !== 0 && !servedFromHMRServer;
+      if (!absolute) {
+        updateLink(links[i]);
+      }
+    }
+    cssTimeout = null;
+  }, 50);
+}
+function hmrApply(bundle, /*: ParcelRequire*/
+asset) /*:  HMRAsset*/
+{
+  var modules = bundle.modules;
+  if (!modules) {
+    return;
+  }
+  if (asset.type === 'css') {
+    reloadCSS();
+    return;
+  }
+  let deps = asset.depsByBundle[bundle.HMR_BUNDLE_ID];
+  if (deps) {
+    var fn = new Function('require', 'module', 'exports', asset.output);
+    modules[asset.id] = [fn, deps];
+  } else if (bundle.parent) {
+    hmrApply(bundle.parent, asset);
+  }
+}
+function hmrAcceptCheck(bundle, /*: ParcelRequire*/
+id, /*: ParcelRequire*/
+/*: string*/
+depsByBundle) /*: ?{ [string]: { [string]: string } }*/
+{
+  var modules = bundle.modules;
+  if (!modules) {
+    return;
+  }
+  if (depsByBundle && !depsByBundle[bundle.HMR_BUNDLE_ID]) {
+    // If we reached the root bundle without finding where the asset should go,
+    // there's nothing to do. Mark as "accepted" so we don't reload the page.
+    if (!bundle.parent) {
+      return true;
+    }
+    return hmrAcceptCheck(bundle.parent, id, depsByBundle);
+  }
+  if (checkedAssets[id]) {
+    return;
+  }
+  checkedAssets[id] = true;
+  var cached = bundle.cache[id];
+  assetsToAccept.push([bundle, id]);
+  if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
+    return true;
+  }
+  return getParents(module.bundle.root, id).some(function (v) {
+    return hmrAcceptCheck(v[0], v[1], null);
+  });
+}
+function hmrAcceptRun(bundle, /*: ParcelRequire*/
+id) /*: string*/
+{
+  var cached = bundle.cache[id];
+  bundle.hotData = {};
+  if (cached && cached.hot) {
+    cached.hot.data = bundle.hotData;
+  }
+  if (cached && cached.hot && cached.hot._disposeCallbacks.length) {
+    cached.hot._disposeCallbacks.forEach(function (cb) {
+      cb(bundle.hotData);
+    });
+  }
+  delete bundle.cache[id];
+  bundle(id);
+  cached = bundle.cache[id];
+  if (cached && cached.hot && cached.hot._acceptCallbacks.length) {
+    cached.hot._acceptCallbacks.forEach(function (cb) {
+      var assetsToAlsoAccept = cb(function () {
+        return getParents(module.bundle.root, id);
+      });
+      if (assetsToAlsoAccept && assetsToAccept.length) {
+        assetsToAccept.push.apply(assetsToAccept, assetsToAlsoAccept);
+      }
+    });
+  }
+  acceptedAssets[id] = true;
+}
+
+},{}],"3L8AI":[function(require,module,exports) {
+var _Search = require('./Search');
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+var _SearchDefault = _parcelHelpers.interopDefault(_Search);
+var _searchView = require('./searchView');
+var _Recipe = require('./Recipe');
+var _RecipeDefault = _parcelHelpers.interopDefault(_Recipe);
+var _recipeView = require('./recipeView');
+var _Like = require('./Like');
+var _LikeDefault = _parcelHelpers.interopDefault(_Like);
+var _likeView = require('./likeView');
+var _base = require('./base');
+var _userRecipe = require('./userRecipe');
+var _userRecipeDefault = _parcelHelpers.interopDefault(_userRecipe);
+/** Global state of the app
+* - Search object
+* - Current recipe object
+* - Shopping list object
+* - Liked recipes
+*/
+const state = {};
+// The user SEARCHES for a keyword in the recipe bar
+_base.elements.searchForm.addEventListener('submit', event => {
+  // Prevent default action from occuring, in this case it prevent reloading the page
+  // submitting a form.
+  event.preventDefault();
+  controlSearch();
+});
+// Render the PREV or NEXT page of results from the recipe result list
+_base.elements.searchResultPages.addEventListener('click', event => {
+  const btn = event.target.closest(`.${_base.elementStrings.btn_inline}`);
+  if (btn) {
+    const goToPage = parseInt(btn.dataset.goto);
+    _searchView.clearResults();
+    _searchView.renderResults(state.search.results, goToPage);
+  }
+});
+/**
+* SEARCH CONTROLLER
+*/
+const controlSearch = async () => {
+  // 1) Get query from view
+  const query = _searchView.getInput();
+  if (query) {
+    // 2) New search object and add to state
+    state.search = new _SearchDefault.default(query);
+    // 3) Prepare UI for results
+    _searchView.clearInput();
+    _searchView.clearResults();
+    _base.renderLoader(_base.elements.searchResult);
+    try {
+      // 4) Search for recipes
+      await state.search.getResults();
+      // 5) Render results on UI
+      _base.clearLoader();
+      _searchView.renderResults(state.search.results);
+    } catch (error) {
+      _base.clearLoader();
+      alert(error);
+    }
+  }
+};
+/**
+* RECIPE CONTROLLER
+*/
+// DISPLAY the recipe selected using the hash key from the url
+const controlRecipe = async () => {
+  // 1) Get ID from url
+  const id = window.location.hash.replace('#', '');
+  if (id) {
+    // Prepare the UI for changes
+    _recipeView.clearRecipe();
+    _base.renderLoader(_base.elements.recipe);
+    // Highlight selected search item
+    if (state.search) _searchView.highlightSelected(id);
+    // Create new recipe object
+    state.recipe = new _RecipeDefault.default(id);
+    try {
+      // Get recipe data
+      await state.recipe.getRecipe();
+      state.recipe.parseIngredients();
+      // Calc time and servings
+      state.recipe.calcTime();
+      state.recipe.calcServings();
+      // Render recipe
+      _base.clearLoader();
+      _recipeView.renderRecipe(state.recipe, state.like.isLiked(id));
+    } catch (error) {
+      alert(error);
+    }
+  }
+};
+// Render the SELECTED when the user clicks on the item using the hash value
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
+/**
+* LIKE CONTROLLER
+*/
+const controlLike = () => {
+  if (!state.like) state.like = new _LikeDefault.default();
+  const currentID = state.recipe.id;
+  // Use has not yet liked current recipe
+  if (!state.like.isLiked(currentID)) {
+    // Add like to the state
+    const newLike = state.like.addLike(currentID, state.recipe.title, state.recipe.author, state.recipe.img);
+    // Toggle the like button
+    _likeView.toggleLikeBtn(true);
+    // Add like to UI list
+    _likeView.renderLike(newLike);
+  } else {
+    // Remove like from the state
+    state.like.deleteLike(currentID);
+    // Toggle the like button
+    _likeView.toggleLikeBtn(false);
+    // Remove like from UI list
+    _likeView.deleteLikeItem(currentID);
+  }
+  _likeView.toggleLikeMenu(state.like.getNumLikes());
+};
+// Restore liked recipes on page load
+window.addEventListener('load', () => {
+  state.like = new _LikeDefault.default();
+  // Restore likes
+  state.like.readStorage();
+  // Toggle like menu button
+  _likeView.toggleLikeMenu(state.like.getNumLikes());
+  // Render the existing likes
+  state.like.likes.forEach(curr => _likeView.renderLike(curr));
+});
+// Handling the LIKE button clicks
+_base.elements.recipe.addEventListener('click', event => {
+  if (event.target.matches('.recipe__love, .recipe__love *')) {
+    // Add to liked recipe
+    controlLike();
+  }
+});
+/**
+* NEW USER RECIPE CONTROLLER
+*/
+const controlUserRecipe = () => {
+  state.userRecipe = new _userRecipeDefault.default();
+  // [elements.closeUserRecipe, elements.recipeOverlay].forEach((elem) =>
+  // elem.addEventListener('click', state.userRecipe.toggleUserRecipe)
+  // );
+  // elements.userRecipeForm.addEventListener('submit', state.userRecipe.submitUserRecipe);
+  state.userRecipe.persistUserRecipeData();
+};
+_base.elements.addRecipeBtn.addEventListener('click', controlUserRecipe);
+
+},{"./Search":"5MdMM","./searchView":"4vEoB","./Recipe":"6x38A","./recipeView":"604sK","./Like":"23ebU","./likeView":"5Tk5D","./base":"3mFxE","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","./userRecipe":"36mVm"}],"5MdMM":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _config = require('./config');
+class Search {
+  constructor(query) {
+    this.query = query;
+  }
+  async getResults() {
+    try {
+      const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${this.query}&key=${_config.key}`);
+      const data = await res.json();
+      // console.log(res);
+      // console.log(data);
+      this.results = data.data.recipes;
+    } catch (error) {
+      alert(error);
+    }
+  }
+}
+exports.default = Search;
+
+},{"./config":"6pr2F","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"6pr2F":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "key", function () {
+  return key;
+});
+const key = '2873f46c-8e8a-4d73-bb2a-1f46b1e47edc';
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"5gA8y":[function(require,module,exports) {
+"use strict";
+
+exports.interopDefault = function (a) {
+  return a && a.__esModule ? a : {
+    default: a
+  };
+};
+
+exports.defineInteropFlag = function (a) {
+  Object.defineProperty(a, '__esModule', {
+    value: true
+  });
+};
+
+exports.exportAll = function (source, dest) {
+  Object.keys(source).forEach(function (key) {
+    if (key === 'default' || key === '__esModule') {
+      return;
+    } // Skip duplicate re-exports when they have the same value.
+
+
+    if (key in dest && dest[key] === source[key]) {
+      return;
+    }
+
+    Object.defineProperty(dest, key, {
+      enumerable: true,
+      get: function () {
+        return source[key];
+      }
+    });
+  });
+  return dest;
+};
+
+exports.export = function (dest, destName, get) {
+  Object.defineProperty(dest, destName, {
+    enumerable: true,
+    get: get
+  });
+};
+},{}],"4vEoB":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "getInput", function () {
+  return getInput;
+});
+_parcelHelpers.export(exports, "clearInput", function () {
+  return clearInput;
+});
+_parcelHelpers.export(exports, "clearResults", function () {
+  return clearResults;
+});
+_parcelHelpers.export(exports, "highlightSelected", function () {
+  return highlightSelected;
+});
+_parcelHelpers.export(exports, "limitTitle", function () {
+  return limitTitle;
+});
+_parcelHelpers.export(exports, "renderResults", function () {
+  return renderResults;
+});
+var _base = require('./base');
+const getInput = () => _base.elements.searchInput.value;
+const clearInput = () => {
+  _base.elements.searchInput.value = '';
+};
+const clearResults = () => {
+  _base.elements.searchResultList.innerHTML = '';
+  _base.elements.searchResultPages.innerHTML = '';
+};
+const highlightSelected = id => {
+  const resultsArr = Array.from(document.querySelectorAll(`.${_base.elementStrings.resultsLink}`));
+  resultsArr.forEach(el => el.classList.remove(_base.elementStrings.resultsLinkActive));
+  document.querySelector(`.results__link[href="#${id}"]`).classList.add(_base.elementStrings.resultsLinkActive);
+};
+const limitTitle = (title, limit = 30) => {
+  const newTitle = [];
+  if (title.length > limit) {
+    title.split(' ').reduce((acc, curr) => {
+      if (acc + curr.length <= limit) {
+        newTitle.push(curr);
+      }
+      return acc + curr.length;
+    }, 0);
+    return `${newTitle.join(' ')} ...`;
+  }
+  return title;
+};
+const createButton = (page, type) => `
+          <button class="${_base.elementStrings.btn_inline} results__btn--${type}" data-goto=${type === 'prev' ? page - 1 : page + 1}>
+              <span>Page ${type === 'prev' ? page - 1 : page + 1}</span>
+
+              <i class='bx bxs-skip-${type === 'prev' ? 'previous' : 'next'}-circle search__icon' ></i>
+          </button>
+`;
+const renderButtons = (page, numResults, resPerPage) => {
+  const pages = Math.ceil(numResults / resPerPage);
+  let button;
+  if (page === 1 && pages > 1) {
+    // Button to go to next page
+    button = createButton(page, 'next');
+  } else if (page < pages) {
+    // Both buttons
+    button = `
+    ${createButton(page, 'prev')}
+    ${createButton(page, 'next')}
+    `;
+  } else if (page === pages && pages > 1) {
+    // Button to go to previous page
+    button = createButton(page, 'prev');
+  }
+  _base.elements.searchResultPages.insertAdjacentHTML('afterbegin', button);
+};
+const renderRecipe = currRecipe => {
+  const markup = `
+          <li>
+            <a class="results__link" href="#${currRecipe.id}">
+              <figure class="results__fig">
+                <img src="${currRecipe.image_url}" alt="${currRecipe.title}">
+              </figure>
+              <div class="results__data">
+                <h4 class="results__name">${limitTitle(currRecipe.title)}</h4>
+                <p class="results__author">${currRecipe.publisher}</p>
+              </div>
+              <i class='bx bxs-tag-alt results__arrow'></i>
+            </a>
+          </li>
+          `;
+  _base.elements.searchResultList.insertAdjacentHTML('beforeend', markup);
+};
+const renderResults = (recipesArr, page = 1, resPerPage = 10) => {
+  // Redner results of current page
+  const start = (page - 1) * resPerPage;
+  const end = page * resPerPage;
+  recipesArr.slice(start, end).forEach(curr => renderRecipe(curr));
+  // Render pagination buttons
+  renderButtons(page, recipesArr.length, resPerPage);
+};
+
+},{"./base":"3mFxE","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"3mFxE":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "elements", function () {
+  return elements;
+});
+_parcelHelpers.export(exports, "elementStrings", function () {
+  return elementStrings;
+});
+_parcelHelpers.export(exports, "renderLoader", function () {
+  return renderLoader;
+});
+_parcelHelpers.export(exports, "clearLoader", function () {
+  return clearLoader;
+});
+const elements = {
+  searchForm: document.querySelector('.search'),
+  searchInput: document.querySelector('.search__field'),
+  searchResultList: document.querySelector('.results__list'),
+  searchResult: document.querySelector('.results'),
+  searchResultPages: document.querySelector('.results__pages'),
+  recipe: document.querySelector('.recipe'),
+  likeIcon: document.querySelector('.recipe__love'),
+  likeMenu: document.querySelector('.likes__field'),
+  likeList: document.querySelector('.likes__list'),
+  addRecipeBtn: document.querySelector('.nav__btn--add-recipe'),
+  recipeWindow: document.querySelector('.add-recipe-window'),
+  recipeOverlay: document.querySelector('.overlay'),
+  closeUserRecipe: document.querySelector('.btn--close-modal'),
+  userRecipeForm: document.querySelector('.upload')
+};
+const elementStrings = {
+  loader: 'loader',
+  btn_inline: 'btn-inline',
+  resultsLink: 'results__link',
+  resultsLinkActive: 'results__link--active'
+};
+const renderLoader = parent => {
+  const loader = `
+    <div class="${elementStrings.loader}">
+      <i class='bx bx-loader-circle' ></i>
+    </div>
+    `;
+  parent.insertAdjacentHTML('afterbegin', loader);
+};
+const clearLoader = () => {
+  const loader = document.querySelector(`.${elementStrings.loader}`);
+  if (loader) {
+    loader.parentElement.removeChild(loader);
+  }
+};
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"6x38A":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _config = require('./config');
+const evalString = string => {
+  return Function('"use strict";return (' + string + ')')();
+};
+class Recipe {
+  constructor(id) {
+    this.id = id;
+  }
+  async getRecipe() {
+    try {
+      const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${this.id}?key=${_config.key}`);
+      const data = await res.json();
+      this.title = data.data.recipe.title;
+      this.author = data.data.recipe.publisher;
+      this.img = data.data.recipe.image_url;
+      this.url = data.data.recipe.source_url;
+      this.ingredients = data.data.recipe.ingredients;
+    } catch (error) {
+      alert(error);
+    }
+  }
+  calcTime() {
+    // Assume we need 15min per 3 ingredients
+    const numIng = this.ingredients.length;
+    this.time = Math.ceil(numIng / 3) * 15;
+  }
+  calcServings() {
+    this.servings = 4;
+  }
+  parseIngredients() {
+    const newIngredients = this.ingredients.map(el => {
+      // 1) Uniform units
+      let ingredient = el.description.toLowerCase();
+      // 2) Remove parentheses
+      ingredient = ingredient.replace(/ *\([^)]*\) */g, ' ');
+      let ingObj;
+      // There is BOTH a quantity and a unit
+      if (el.quantity != null) {
+        ingObj = {
+          count: el.quantity,
+          unit: el.unit,
+          ingredient: ingredient
+        };
+      } else {
+        ingObj = {
+          count: 1,
+          unit: el.unit,
+          ingredient: ingredient
+        };
+      }
+      return ingObj;
+    });
+    this.ingredients = newIngredients;
+  }
+}
+exports.default = Recipe;
+
+},{"./config":"6pr2F","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"604sK":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "clearRecipe", function () {
+  return clearRecipe;
+});
+_parcelHelpers.export(exports, "renderRecipe", function () {
+  return renderRecipe;
+});
+var _base = require('./base');
+const clearRecipe = () => _base.elements.recipe.innerHTML = '';
+const createIngredient = ingredient => `
+            <li class="recipe__item">
+                <i class='bx bxs-check-square recipe__icon' ></i>
+                <div class="recipe__count">${ingredient.count}</div>
+                <div class="recipe__ingredient">
+                     <span class="recipe__unit">${ingredient.unit}</span>
+                    ${ingredient.ingredient}
+                </div>
+            </li>
+`;
+const renderRecipe = (recipe, isLiked) => {
+  const markup = `
+            <figure class="recipe__fig">
+                <img src="${recipe.img}" alt="${recipe.title}" class="recipe__img">
+                <h1 class="recipe__title">
+                    <span>${recipe.title}</span>
+                </h1>
+            </figure>
+
+            <div class="recipe__details">
+                <div class="recipe__info">
+                    <i class='bx bxs-time-five' ></i>
+                    <span class="recipe__info-data recipe__info-data--minutes">${recipe.time}</span>
+                    <span class="recipe__info-text"> minutes</span>
+                </div>
+                <div class="recipe__info">
+                    <i class='bx bxs-user'></i>
+                    <span class="recipe__info-data recipe__info-data--people">${recipe.servings}</span>
+                    <span class="recipe__info-text"> servings</span>
+
+                </div>
+                <button class="recipe__love">
+                    <i class="bx ${isLiked ? 'bxs' : 'bx'}-heart" ></i>
+                </button>
+            </div>
+
+            <div class="recipe__ingredients">
+                <ul class="recipe__ingredient-list">
+                    ${recipe.ingredients.map(el => createIngredient(el)).join('')}
+                </ul>
+            </div>
+
+            <div class="recipe__directions">
+                <h2 class="heading-2">How to cook it</h2>
+                <p class="recipe__directions-text">
+                    This recipe was created by
+                    <span class="recipe__by">${recipe.author}</span>. Find out more details about the recipe here.
+                </p>
+                <a class="btn-small recipe__btn" href="${recipe.url}" target="_blank">
+                    <span>Directions</span>
+                    <i class='bx bxs-book-content'></i>
+                </a>
+            </div>
+    `;
+  _base.elements.recipe.insertAdjacentHTML('afterbegin', markup);
+};
+
+},{"./base":"3mFxE","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"23ebU":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+class Like {
+  constructor() {
+    this.likes = [];
+  }
+  addLike(id, title, author, img) {
+    const like = {
+      id,
+      title,
+      author,
+      img
+    };
+    this.likes.push(like);
+    // Persist data in localStorage
+    this.persistData();
+    return like;
+  }
+  deleteLike(id) {
+    const index = this.likes.findIndex(curr => curr.id === id);
+    this.likes.splice(index, 1);
+    // Persist data in localStorage
+    this.persistData();
+  }
+  isLiked(id) {
+    return this.likes.findIndex(curr => curr.id === id) !== -1;
+  }
+  getNumLikes() {
+    return this.likes.length;
+  }
+  persistData() {
+    localStorage.setItem('like', JSON.stringify(this.likes));
+  }
+  readStorage() {
+    const storage = JSON.parse(localStorage.getItem('like'));
+    // Restore likes from the local storage
+    if (storage) this.likes = storage;
+  }
+}
+exports.default = Like;
+
+},{"@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"5Tk5D":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+_parcelHelpers.export(exports, "toggleLikeBtn", function () {
+  return toggleLikeBtn;
+});
+_parcelHelpers.export(exports, "toggleLikeMenu", function () {
+  return toggleLikeMenu;
+});
+_parcelHelpers.export(exports, "renderLike", function () {
+  return renderLike;
+});
+_parcelHelpers.export(exports, "deleteLikeItem", function () {
+  return deleteLikeItem;
+});
+var _base = require('./base');
+var _searchView = require('./searchView');
+const toggleLikeBtn = isLiked => {
+  const iconString = isLiked ? 'bxs' : 'bx';
+  // Can select a certain child element of a parent element like '.recipe__love use'
+  document.querySelector('.recipe__love i').setAttribute('class', `bx ${iconString}-heart`);
+};
+const toggleLikeMenu = numLikes => {
+  _base.elements.likeMenu.style.visibility = numLikes > 0 ? 'visible' : 'hidden';
+};
+const renderLike = like => {
+  const markup = `
+        <li>
+            <a class="likes__link" href="#${like.id}">
+                <figure class="likes__fig">
+                    <img src="${like.img}" alt="Test">
+                </figure>
+                <div class="likes__data">
+                    <h4 class="likes__name">${_searchView.limitTitle(like.title)}</h4>
+                    <p class="likes__author">${like.author}</p>
+                </div>
+            </a>
+        </li>
+    `;
+  _base.elements.likeList.insertAdjacentHTML('beforeend', markup);
+};
+const deleteLikeItem = id => {
+  const element = document.querySelector(`.likes__link[href='#${id}']`).parentElement;
+  if (element) element.parentElement.removeChild(element);
+};
+
+},{"./base":"3mFxE","./searchView":"4vEoB","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y"}],"36mVm":[function(require,module,exports) {
+var _parcelHelpers = require("@parcel/transformer-js/lib/esmodule-helpers.js");
+_parcelHelpers.defineInteropFlag(exports);
+var _base = require('./base');
+require('./config');
+class addRecipeView {
+  constructor() {
+    this.recipe = {};
+    this.toggleUserRecipe();
+    this.addEventHandlers();
+  }
+  toggleUserRecipe() {
+    _base.elements.recipeOverlay.classList.toggle('hidden');
+    _base.elements.recipeWindow.classList.toggle('hidden');
+  }
+  addEventHandlers() {
+    [_base.elements.closeUserRecipe, _base.elements.recipeOverlay].forEach(elem => elem.addEventListener('click', this.toggleUserRecipe.bind(this)));
+    let formInfo;
+    // elements.userRecipeForm.addEventListener('submit', this.submitUserRecipe.bind(this));
+    _base.elements.userRecipeForm.addEventListener('submit', function (event) {
+      formInfo = [...new FormData(this)];
+    });
+    console.log(formInfo);
+  }
+  submitUserRecipe(event) {
+    event.preventDefault();
+    const formDataArr = [...new FormData(this)];
+    const ingredients = formDataArr.filter(input => {
+      return input[0].startsWith('ingredient') && input[1] !== '';
+    });
+    const ingredientsSplit = ingredients.map(ing => {
+      const ingArr = ing[1].replaceAll(' ', '').split(',');
+      if (ingArr.length !== 3) throw new Error('Ingredient input invalid!');
+      return ingArr;
+    });
+    const newRecipe = Object.fromEntries(formDataArr);
+    this.recipe = {
+      title: newRecipe.title,
+      source_url: newRecipe.sourceUrl,
+      image_url: newRecipe.image,
+      publisher: newRecipe.publisher,
+      cooking_time: +newRecipe.cookingTime,
+      servings: +newRecipe.servings,
+      ingredients: ingredientsSplit
+    };
+  }
+  persistUserRecipeData() {
+    // try {
+    // let url = `https://forkify-api.herokuapp.com/api/v2/recipes?key=${key}`;
+    // const fetch = fetch(url, {
+    // method: 'POST',
+    // headers: {
+    // 'Content-Type': 'application/json',
+    // },
+    // body: JSON.stringify(recipeObj),
+    // });
+    // const res = await Promise.race([fetch, timeout(10)]);
+    // const data = await res.json();
+    // if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    // return data;
+    // } catch (error) {
+    // window.alert(error);
+    // }
+    console.log(this.recipe);
+    const userRecipe = JSON.stringify(this.recipe);
+    console.log(userRecipe);
+  }
+}
+exports.default = addRecipeView;
+
+},{"./base":"3mFxE","@parcel/transformer-js/lib/esmodule-helpers.js":"5gA8y","./config":"6pr2F"}]},["21c8X","3L8AI"], "3L8AI", "parcelRequired587")
+
+//# sourceMappingURL=index.HASH_REF_062e9a7565ca912a5f7d6b832142d36c.js.map
